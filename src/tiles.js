@@ -1,16 +1,17 @@
 import React from "react";
 
 const styles = {
-  parent: "grid grid-rows-3 grid-flow-col border-solid border-4 border-white ",
-  styleBig: "row-span-3 bg-yellow-200 border-solid border-4 border-white",
+  parent: "grid grid-rows-3 grid-flow-col border-solid border-2 border-white ",
+  styleBig:
+    "row-span-1 col-span-1 bg-yellow-200 border-solid border-2 border-white",
   styleMedium:
-    "row-span-2 col-span-1 bg-blue-200 border-solid border-4 border-white",
-  styleSmall: "col-span-1 bg-pink-200 border-solid border-4 border-white",
-  clickedStyleBig: "row-span-3 bg-gray-300 border-solid border-4 border-white",
+    "row-span-3 col-span-1 bg-blue-200 border-solid border-2 border-white",
+  styleSmall: "row-span-2 bg-pink-200 border-solid border-2 border-white",
+  clickedStyleBig: "row-span-1 bg-gray-300 border-solid border-2 border-white",
   clickedStyleMedium:
-    "row-span-2 col-span-1 bg-gray-300 border-solid border-4 border-white",
+    "row-span-3 col-span-1 bg-gray-300 border-solid border-2 border-white",
   clickedStyleSmall:
-    "col-span-1 bg-gray-300 border-solid border-4 border-white",
+    "row-span-2 bg-gray-300 border-solid border-2 border-white",
 };
 
 class Tiles extends React.Component {
@@ -31,7 +32,7 @@ class Tiles extends React.Component {
   renderTable = (start, end) => {
     let res = [];
     for (let i = start; i < end; i++) {
-      if (i % 3 === 1) {
+      if (i % 3 === 2) {
         res.push(
           <div>
             <div
@@ -43,11 +44,11 @@ class Tiles extends React.Component {
                   : styles.styleBig
               }
             >
-              Big
+              Small
             </div>
           </div>
         );
-      } else if (i % 3 === 2) {
+      } else if (i % 3 === 1) {
         res.push(
           <div
             key={i}
@@ -58,7 +59,7 @@ class Tiles extends React.Component {
                 : styles.styleMedium
             }
           >
-            Medium
+            Big
           </div>
         );
       } else {
@@ -72,7 +73,7 @@ class Tiles extends React.Component {
                 : styles.styleSmall
             }
           >
-            Small
+            Medium
           </div>
         );
       }
@@ -83,9 +84,22 @@ class Tiles extends React.Component {
 
   render() {
     return (
-      <div>
-        <div class={styles.parent}>{this.renderTable(0, 9)}</div>
-        <div class={styles.parent}>{this.renderTable(9, 18)}</div>
+      <div class="grid grid-cols-3">
+        <div class="col-span-2">
+          <div key={"a"} class={styles.parent}>
+            {this.renderTable(0, 10)}
+          </div>
+          <div key={"b"} class={styles.parent}>
+            {this.renderTable(10, 20)}
+          </div>
+        </div>
+        <div class="bg-origin-border p-4 border-4 border-dashed ">
+          <p class="font-sans text-red-500">Clicked Tile Info</p>
+          <p class="font-sans text-red-500">
+            Id:{" "}
+            {this.state.clickedIndex !== null ? this.state.clickedIndex : "-"}
+          </p>
+        </div>
       </div>
     );
   }

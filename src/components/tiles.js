@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { getLocation } from "../actions/location";
 
 const styles = {
   parent: "grid grid-rows-3 grid-flow-col border-solid border-2 border-white ",
@@ -23,10 +25,14 @@ class Tiles extends React.Component {
     };
   }
 
-  onTextPress = (e, i) => {
-    this.setState({
-      clickedIndex: i,
-    });
+  onTextPress = (e, id) => {
+    this.setState(
+      {
+        clickedIndex: id,
+      },
+      //We can fetch data from API to get information about the location clicked then update to redux
+      () => this.props.getLocation(id)
+    );
   };
 
   renderTable = (start, end) => {
@@ -83,6 +89,7 @@ class Tiles extends React.Component {
   };
 
   render() {
+    const { info } = this.props;
     return (
       <div class="grid grid-cols-3">
         <div class="col-span-2">
@@ -99,10 +106,26 @@ class Tiles extends React.Component {
             Id:{" "}
             {this.state.clickedIndex !== null ? this.state.clickedIndex : "-"}
           </p>
+          <p>Title: {info.title ? info.title : "-"}</p>
+          <p>Description: {info.body ? info.body : "-"}</p>
         </div>
       </div>
     );
   }
 }
 
-export default Tiles;
+const mapStateToProps = (state) => {
+  return {
+    info: state.info,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getLocation: (id) => {
+      dispatch(getLocation(id));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tiles);
